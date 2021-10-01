@@ -1,10 +1,20 @@
 package net.iponweb.intro
 
 object err {
-  def div(x: Int, y: Int): Option[Int] =
+  final case class DivisionError(cause: String)
+
+  def div(x: Int, y: Int): Either[DivisionError, Int] =
     if (y == 0) {
-      None
+      Left(DivisionError("Impossible to divide by 0"))
     } else {
-      Some(x / y)
+      Right(x / y)
     }
+
+  for {
+    r1 <- div(10, 5)
+    r2 <- div(r1, 0)
+    r3 <- div(r2, 2)
+  } yield r3
+
+  div(10, 5).map(_ * 3).left.map(_.cause)
 }
