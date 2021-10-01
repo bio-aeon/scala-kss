@@ -31,13 +31,13 @@ class ExceptionsRTSpec extends Specification {
     }
 
     "be caught in func2" >> {
-      func2(10) mustEqual(11)
+      func2(10) mustEqual (11)
     }
 
     "break referential transparency" >> {
       val r1 = Try(func1(10))
       val r2 = Try(func2(10))
-      r1 mustNotEqual(r2)
+      r1 mustNotEqual (r2)
     }
   }
 }

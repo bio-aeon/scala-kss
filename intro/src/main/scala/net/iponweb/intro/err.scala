@@ -1,10 +1,10 @@
 package net.iponweb.intro
 
 object err {
-  def div(x: Int, y: Int): Int =
+  def div(x: Int, y: Int): Option[Int] =
     if (y == 0) {
-      throw new IllegalArgumentException("Impossible to divide by 0")
+      None
     } else {
-      x / y
+      Some(x / y)
     }
 }
