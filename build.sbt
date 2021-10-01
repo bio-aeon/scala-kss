@@ -26,4 +26,4 @@ lazy val root = (project in file("."))
   .aggregate(intro)
 
 lazy val intro = (project in file("intro"))
-  .settings(commonSettings, libraryDependencies ++= Seq(specs2Core))
+  .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
