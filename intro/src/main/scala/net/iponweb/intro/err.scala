@@ -11,10 +11,8 @@ object err {
     }
 
   for {
-    r1 <- div(10, 5)
-    r2 <- div(r1, 0)
+    r1 <- div(10, 5).map(_ * 2)
+    r2 <- div(r1, 0).orElse(div(15, 3)).left.map(err => DivisionError(s"${err.cause}!!!"))
     r3 <- div(r2, 2)
   } yield r3
-
-  div(10, 5).map(_ * 3).left.map(_.cause)
 }

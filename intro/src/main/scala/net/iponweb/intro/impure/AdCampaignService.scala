@@ -7,7 +7,7 @@ class AdCampaignService {
   def launchCampaign(wallet: Wallet,
                      params: CampaignParams,
                      paymentService: PaymentService): Campaign = {
-    val price = 100 // some algorithm(params) -> returns 100
+    val price = priceAlgorithm(params)
 
     val campaign = Campaign(price, params)
 
@@ -15,4 +15,6 @@ class AdCampaignService {
 
     campaign
   }
+
+  private def priceAlgorithm(params: CampaignParams): Int = ???
 }
