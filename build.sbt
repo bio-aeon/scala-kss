@@ -23,7 +23,10 @@ val commonSettings = Seq(
 
 lazy val root = (project in file("."))
   .settings(name := "scala-kss", commonSettings)
-  .aggregate(intro)
+  .aggregate(intro, cat)
 
 lazy val intro = (project in file("intro"))
+  .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
+
+lazy val cat = (project in file("cat"))
   .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
