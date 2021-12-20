@@ -25,7 +25,7 @@ class MyProgram(httpClient: HttpClient) {
 class StateSpec extends Specification {
 
   "State should" >> {
-    
+
     "remember the number of http calls" >> {
       val httpClient = new HttpClient()
       val program = new MyProgram(httpClient)
