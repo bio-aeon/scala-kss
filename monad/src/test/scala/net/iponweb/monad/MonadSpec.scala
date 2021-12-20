@@ -1,8 +1,11 @@
 package net.iponweb.monad
 
 import net.iponweb.monad.instances.state._
+import net.iponweb.monad.instances.try_._
 import net.iponweb.monad.laws.MonadLaws._
 import org.specs2.mutable.Specification
+
+import scala.util.Try
 
 class MonadSpec extends Specification {
 
@@ -26,6 +29,13 @@ class MonadSpec extends Specification {
       preservesLeftIdentity(5, f)(compare) must beTrue
       preservesRightIdentity(s)(compare)
       preservesAssociativity(s, f, g)(compare)
+    }
+
+    "violate the left identity for Try" >> {
+      def h(i: Int): Try[Int] = throw new Exception("error")
+
+      monadForTry.flatMap(monadForTry.pure(5))(h) must beFailedTry
+      h(5) must throwA[Exception]
     }
   }
 }
