@@ -3,7 +3,7 @@ package net.iponweb.monad.syntax
 import net.iponweb.monad.Applicative
 
 trait ApplicativeSyntax {
-  final implicit def syntaxResource[F[_], A](fa: F[A]): ApplicativeOps[F, A] =
+  final implicit def syntaxApplicative[F[_], A](fa: F[A]): ApplicativeOps[F, A] =
     new ApplicativeOps(fa)
 }
 

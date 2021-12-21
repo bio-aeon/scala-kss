@@ -3,7 +3,7 @@ package net.iponweb.monad.syntax
 import net.iponweb.monad.Monad
 
 trait MonadSyntax {
-  final implicit def syntaxResource[F[_], A](fa: F[A]): MonadOps[F, A] =
+  final implicit def syntaxMonad[F[_], A](fa: F[A]): MonadOps[F, A] =
     new MonadOps(fa)
 }
 
