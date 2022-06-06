@@ -15,15 +15,15 @@ val commonScalacOptions = Seq(
 val commonSettings = Seq(
   organization := "net.iponweb",
   version := "0.1.0-SNAPSHOT",
-  scalaVersion := "2.13.6",
+  scalaVersion := "2.13.8",
   scalacOptions ++= commonScalacOptions,
-  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.patch),
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.patch),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
 )
 
 lazy val root = (project in file("."))
   .settings(name := "scala-kss", commonSettings)
-  .aggregate(intro, cat, monad)
+  .aggregate(intro, cat, monad, io)
 
 lazy val intro = (project in file("intro"))
   .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
@@ -34,3 +34,6 @@ lazy val cat = (project in file("cat"))
 lazy val monad = (project in file("monad"))
   .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
   .dependsOn(cat)
+
+lazy val io = (project in file("io"))
+  .settings(commonSettings, libraryDependencies ++= Seq(catsCore))
