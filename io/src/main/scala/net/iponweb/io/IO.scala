@@ -6,7 +6,7 @@ sealed abstract class IO[+A] {
 
 final case class Pure[+A](x: A) extends IO[A]
 final case class Delay[+A](thunk: () => A) extends IO[A]
-final case class FlatMap[A, B](ioa: IO[A], f: A => IO[B]) extends IO[B]
+final case class FlatMap[A, +B](ioa: IO[A], f: A => IO[B]) extends IO[B]
 
 object IO {
   def pure[A](x: A): IO[A] = Pure(x)

@@ -32,5 +32,5 @@ object Effectful {
     showMsg("Downloading log file") >> IO.delay(gsClient.download(path))
 
   def showMsg(msg: String): IO[Unit] =
-    IO.delay(println(msg))
+    IO.delay(println(s"$msg [thread: ${Thread.currentThread.getName}]"))
 }
