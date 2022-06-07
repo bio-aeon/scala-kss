@@ -5,7 +5,7 @@ import net.iponweb.monad.syntax.monad._
 
 object App {
   def main(args: Array[String]): Unit =
-    program.run
+    Interpreters.runIO(program)
 
   private[io] def program: IO[Unit] =
     for {

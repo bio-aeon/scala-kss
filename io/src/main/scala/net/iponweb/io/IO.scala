@@ -1,20 +1,15 @@
 package net.iponweb.io
 
-abstract class IO[+A] { self: IO[A] =>
-  def run: A
-
-  def flatMap[B](f: A => IO[B]): IO[B] =
-    new IO[B] {
-      def run: B = f(self.run).run
-    }
+sealed abstract class IO[+A] {
+  def flatMap[B](f: A => IO[B]): IO[B] = FlatMap(this, f)
 }
 
-object IO {
-  def pure[A](x: A): IO[A] = new IO[A] {
-    def run: A = x
-  }
+final case class Pure[+A](x: A) extends IO[A]
+final case class Delay[+A](thunk: () => A) extends IO[A]
+final case class FlatMap[A, B](ioa: IO[A], f: A => IO[B]) extends IO[B]
 
-  def delay[A](x: => A): IO[A] = new IO[A] {
-    def run: A = x
-  }
+object IO {
+  def pure[A](x: A): IO[A] = Pure(x)
+
+  def delay[A](x: => A): IO[A] = Delay(() => x)
 }
