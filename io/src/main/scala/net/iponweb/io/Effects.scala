@@ -5,13 +5,12 @@ class HttpClient {
 }
 
 class FileIndexClient {
-  def fetch(token: String): List[String] = {
+  def fetch(token: String): List[String] =
     List("my_log.avro")
-  }
 }
 
 class GSClient {
-  def download(path: String): Unit = ()
+  def download(path: String): Boolean = true
 }
 
 object SideEffects {
@@ -30,12 +29,11 @@ object SideEffects {
     fileIndexClient.fetch(token)
   }
 
-  def downloadLog(path: String): Unit = {
+  def downloadLog(path: String): Boolean = {
     showMsg("Downloading log file")
     gsClient.download(path)
   }
 
-  def showMsg(msg: String): Unit = {
+  def showMsg(msg: String): Unit =
     println(msg)
-  }
 }
