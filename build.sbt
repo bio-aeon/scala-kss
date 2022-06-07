@@ -35,5 +35,4 @@ lazy val monad = (project in file("monad"))
   .settings(commonSettings, libraryDependencies ++= Seq(specs2Core % Test))
   .dependsOn(cat)
 
-lazy val io = (project in file("io"))
-  .settings(commonSettings, libraryDependencies ++= Seq(catsCore))
+lazy val io = (project in file("io")).settings(commonSettings).dependsOn(monad)

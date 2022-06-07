@@ -1,16 +1,22 @@
 package net.iponweb.io
 
-object App {
-  def main(args: Array[String]): Unit = {
-    val token = SideEffects.createAuthToken
-    val firstLog = SideEffects.fetchLogs(token).head
-    val downloaded = SideEffects.downloadLog(firstLog)
-    if (downloaded) {
-      SideEffects.showMsg("Successful log download.")
-    } else {
-      SideEffects.showMsg("Failed to download a log.")
-    }
+import net.iponweb.io.instances.monadForIO
+import net.iponweb.monad.syntax.monad._
 
-    SideEffects.showMsg("All done.")
-  }
+object App {
+  def main(args: Array[String]): Unit =
+    program.run
+
+  private[io] def program: IO[Unit] =
+    for {
+      token <- Effectful.createAuthToken
+      firstLog <- Effectful.fetchLogs(token).map(_.head)
+      _ <- Effectful
+        .downloadLog(firstLog)
+        .ifM(
+          Effectful.showMsg("Successful log download."),
+          Effectful.showMsg("Failed to download a log.")
+        )
+      _ <- Effectful.showMsg("All done.")
+    } yield ()
 }
