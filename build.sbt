@@ -49,6 +49,6 @@ lazy val tf = (project in file("tf"))
       circeGeneric,
       circeParser,
       catsEffect,
-      zioInterop
+      catsMtl
     )
   )

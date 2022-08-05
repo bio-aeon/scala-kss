@@ -1,14 +1,13 @@
 package net.iponweb.tf.demo.routing
 
 import cats.ApplicativeError
-import cats.effect.Sync
 import cats.syntax.applicative._
 import cats.syntax.applicativeError._
 import cats.syntax.functor._
 import net.iponweb.tf.demo.domain.AppCmd
 import net.iponweb.tf.demo.domain.AppCmd.{Exit, Join, Unique}
 import net.iponweb.tf.demo.services.ETLService
-import net.iponweb.tf.demo.utils.Logger
+import net.iponweb.tf.demo.utils.{Logger, Logs}
 
 trait Routes[F[_]] {
   def handle(cmd: AppCmd): F[Boolean]
@@ -16,8 +15,10 @@ trait Routes[F[_]] {
 
 object Routes {
 
-  def create[F[_]: Sync](etlService: ETLService[F]): Routes[F] = {
-    val logger = Logger.create[F, Routes[F]]
+  def create[F[_]: ApplicativeError[*[_], Throwable]](
+    etlService: ETLService[F]
+  )(implicit logs: Logs[F]): Routes[F] = {
+    val logger = logs.forService[Routes[F]]
     new Impl[F](logger, etlService)
   }
 

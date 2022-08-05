@@ -1,7 +1,6 @@
 package net.iponweb.tf.demo.services
 
 import cats.MonadError
-import cats.effect.Sync
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.traverse._
@@ -9,7 +8,7 @@ import io.circe.Decoder
 import io.circe.parser.decode
 import io.circe.syntax._
 import net.iponweb.tf.demo.domain.{JoinResult, RecordWithClientId, RecordWithRequestId}
-import net.iponweb.tf.demo.utils.{FilesManager, Logger}
+import net.iponweb.tf.demo.utils.{FilesManager, Logger, Logs}
 
 import java.nio.file.Path
 
@@ -24,8 +23,10 @@ object ETLService {
   val JoinOutputFile = "join-output.txt"
   val UniqueOutputFile = "unique-output.txt"
 
-  def create[F[_]: Sync](filesManager: FilesManager[F]): ETLService[F] = {
-    val logger = Logger.create[F, ETLService[F]]
+  def create[F[_]: MonadError[*[_], Throwable]](
+    filesManager: FilesManager[F]
+  )(implicit logs: Logs[F]): ETLService[F] = {
+    val logger = logs.forService[ETLService[F]]
     new Impl(logger, filesManager)
   }
 
