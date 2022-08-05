@@ -43,5 +43,12 @@ lazy val io = (project in file("io"))
 lazy val tf = (project in file("tf"))
   .settings(
     commonSettings,
-    libraryDependencies ++= Seq(decline, logbackClassic, circeGeneric, circeParser, catsEffect)
+    libraryDependencies ++= Seq(
+      decline,
+      logbackClassic,
+      circeGeneric,
+      circeParser,
+      catsEffect,
+      zioInterop
+    )
   )
