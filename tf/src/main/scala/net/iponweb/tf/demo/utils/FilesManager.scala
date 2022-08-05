@@ -1,42 +1,43 @@
 package net.iponweb.tf.demo.utils
 
-import cats.effect.{IO, Resource}
+import cats.effect.{Resource, Sync}
+import cats.syntax.functor._
 
 import java.io._
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path}
 import scala.jdk.CollectionConverters._
 
-trait FilesManager {
-  def listFiles(dir: Path, extensions: List[String]): IO[List[File]]
+trait FilesManager[F[_]] {
+  def listFiles(dir: Path, extensions: List[String]): F[List[File]]
 
-  def readFile(file: File): IO[List[String]]
+  def readFile(file: File): F[List[String]]
 
-  def writeToFile(content: List[String], file: File): IO[Unit]
+  def writeToFile(content: List[String], file: File): F[Unit]
 }
 
 object FilesManager {
 
-  def create: FilesManager =
-    new Impl
+  def create[F[_]: Sync]: FilesManager[F] =
+    new Impl[F]
 
-  private final class Impl extends FilesManager {
-    override def listFiles(dir: Path, extensions: List[String]): IO[List[File]] =
-      IO(Files.newDirectoryStream(dir))
+  private final class Impl[F[_]](implicit F: Sync[F]) extends FilesManager[F] {
+    override def listFiles(dir: Path, extensions: List[String]): F[List[File]] =
+      F.delay(Files.newDirectoryStream(dir))
         .map(_.iterator.asScala)
         .map(_.filter(x => extensions.exists(x.toString.endsWith)).map(_.toFile))
         .map(_.toList)
 
-    override def readFile(file: File): IO[List[String]] =
+    override def readFile(file: File): F[List[String]] =
       Resource
-        .fromAutoCloseable(IO(new BufferedInputStream(new FileInputStream(file))))
-        .use(is => IO(is.readAllBytes))
+        .fromAutoCloseable(F.delay(new BufferedInputStream(new FileInputStream(file))))
+        .use(is => F.delay(is.readAllBytes))
         .map(new String(_, StandardCharsets.UTF_8))
         .map(_.split("\n").toList)
 
-    override def writeToFile(content: List[String], file: File): IO[Unit] =
+    override def writeToFile(content: List[String], file: File): F[Unit] =
       Resource
-        .fromAutoCloseable(IO(new BufferedWriter(new FileWriter(file))))
-        .use(bw => IO(bw.write(content.mkString("\n"))))
+        .fromAutoCloseable(F.delay(new BufferedWriter(new FileWriter(file))))
+        .use(bw => F.delay(bw.write(content.mkString("\n"))))
   }
 }

@@ -1,6 +1,9 @@
 package net.iponweb.tf.demo.services
 
-import cats.effect.IO
+import cats.MonadError
+import cats.effect.Sync
+import cats.syntax.flatMap._
+import cats.syntax.functor._
 import cats.syntax.traverse._
 import io.circe.Decoder
 import io.circe.parser.decode
@@ -10,10 +13,10 @@ import net.iponweb.tf.demo.utils.{FilesManager, Logger}
 
 import java.nio.file.Path
 
-trait ETLService {
-  def joinLogsByRequestId(firstDir: Path, secondDir: Path, outputDir: Path): IO[Unit]
+trait ETLService[F[_]] {
+  def joinLogsByRequestId(firstDir: Path, secondDir: Path, outputDir: Path): F[Unit]
 
-  def extractUniqueClientIds(targetDir: Path, outputDir: Path): IO[Unit]
+  def extractUniqueClientIds(targetDir: Path, outputDir: Path): F[Unit]
 }
 
 object ETLService {
@@ -21,13 +24,15 @@ object ETLService {
   val JoinOutputFile = "join-output.txt"
   val UniqueOutputFile = "unique-output.txt"
 
-  def create(filesManager: FilesManager): ETLService = {
-    val logger = Logger.create[ETLService]
+  def create[F[_]: Sync](filesManager: FilesManager[F]): ETLService[F] = {
+    val logger = Logger.create[F, ETLService[F]]
     new Impl(logger, filesManager)
   }
 
-  private final class Impl(logger: Logger, filesManager: FilesManager) extends ETLService {
-    override def joinLogsByRequestId(firstDir: Path, secondDir: Path, outputDir: Path): IO[Unit] =
+  private final class Impl[F[_]](logger: Logger[F], filesManager: FilesManager[F])(
+    implicit F: MonadError[F, Throwable]
+  ) extends ETLService[F] {
+    override def joinLogsByRequestId(firstDir: Path, secondDir: Path, outputDir: Path): F[Unit] =
       for {
         firstRecords <- loadGroupedRecords[RecordWithRequestId, String](firstDir, _.requestId)
         secondRecords <- loadGroupedRecords[RecordWithRequestId, String](secondDir, _.requestId)
@@ -53,7 +58,7 @@ object ETLService {
         _ <- filesManager.writeToFile(results, outputDir.resolve(JoinOutputFile).toFile)
       } yield ()
 
-    override def extractUniqueClientIds(targetDir: Path, outputDir: Path): IO[Unit] =
+    override def extractUniqueClientIds(targetDir: Path, outputDir: Path): F[Unit] =
       for {
         records <- loadGroupedRecords[RecordWithClientId, String](targetDir, _.clientId)
         _ <- logger.info("Extract unique client ids")
@@ -62,14 +67,14 @@ object ETLService {
         _ <- filesManager.writeToFile(clientIds.toList, outputDir.resolve(UniqueOutputFile).toFile)
       } yield ()
 
-    private def loadGroupedRecords[A: Decoder, K](dir: Path, groupBy: A => K): IO[Map[K, List[A]]] =
+    private def loadGroupedRecords[A: Decoder, K](dir: Path, groupBy: A => K): F[Map[K, List[A]]] =
       for {
         _ <- logger.info(s"Read logs list from ${dir.getFileName} directory")
         logsList <- filesManager.listFiles(dir, List(".log"))
         logsContent <- logsList.flatTraverse(filesManager.readFile)
         _ <- logger.info(s"Decode content of logs retrieved from ${dir.getFileName} directory")
         records <- logsContent
-          .traverse(x => decode[A](x).fold(err => IO.raiseError[A](err), IO.pure))
+          .traverse(x => decode[A](x).fold(err => F.raiseError[A](err), F.pure))
           .map(_.groupBy(groupBy))
       } yield records
   }
