@@ -2,13 +2,11 @@ package net.iponweb.tf.`final`
 
 object Program {
 
-  def run[A](expression: Expression[A], division: Division[A]): Option[A] = {
+  def run[F[_], A](expression: Expression[F, A], division: Division[F, A]): F[A] = {
     import division._
     import expression._
 
-    val divResult_? = divide(add(intLiteral(35), negate(intLiteral(5))), intLiteral(2))
-    divResult_?.map { divResult =>
-      add(divResult, intLiteral(10))
-    }
+    val divResult = divide(add(intLiteral(35), negate(intLiteral(5))), intLiteral(2))
+    add(divResult, intLiteral(10))
   }
 }

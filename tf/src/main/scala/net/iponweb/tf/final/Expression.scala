@@ -1,19 +1,19 @@
 package net.iponweb.tf.`final`
 
-trait Expression[A] {
-  def intLiteral(n: Int): A
+trait Expression[F[_], A] {
+  def intLiteral(n: Int): F[A]
 
-  def negate(a: A): A
+  def negate(a: F[A]): F[A]
 
-  def add(a: A, b: A): A
+  def add(a: F[A], b: F[A]): F[A]
 }
 
-trait Logical[A] {
-  def boolLiteral(b: Boolean): A
+trait Logical[F[_], A] {
+  def boolLiteral(b: Boolean): F[A]
 
-  def or(a: A, b: A): A
+  def or(a: F[A], b: F[A]): F[A]
 }
 
-trait Division[A] {
-  def divide(a: A, b: A): Option[A]
+trait Division[F[_], A] {
+  def divide(a: F[A], b: F[A]): F[A]
 }
