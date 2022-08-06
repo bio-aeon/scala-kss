@@ -41,4 +41,7 @@ lazy val io = (project in file("io"))
   .dependsOn(monad)
 
 lazy val tf = (project in file("tf"))
-  .settings(commonSettings, libraryDependencies ++= Seq(catsCore))
+  .settings(
+    commonSettings,
+    libraryDependencies ++= Seq(decline, logbackClassic, circeGeneric, circeParser, catsEffect)
+  )

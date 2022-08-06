@@ -1,0 +1,9 @@
+{"@timestamp":"2022-07-27T10:28:58.571Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Choose an appropriate model","threadName":"zio-default-async-13"}
+{"@timestamp":"2022-07-27T10:30:58.624Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Choose an appropriate model","threadName":"zio-default-async-12"}
+{"@timestamp":"2022-07-27T10:30:58.715Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Predict price on given data","threadName":"zio-default-async-9"}
+{"@timestamp":"2022-07-27T10:32:58.727Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Choose an appropriate model","threadName":"zio-default-async-7"}
+{"@timestamp":"2022-07-27T10:32:58.854Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Predict price on given data","threadName":"zio-default-async-9"}
+{"@timestamp":"2022-07-27T10:34:58.949Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Predict price on given data","threadName":"zio-default-async-4"}
+{"@timestamp":"2022-07-27T10:34:59.185Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Schedule model update","threadName":"zio-default-async-9"}
+{"@timestamp":"2022-07-27T10:36:59.273Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Schedule model update","threadName":"zio-default-async-15"}
+{"@timestamp":"2022-07-27T10:36:59.340Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Schedule model update","threadName":"zio-default-async-11"}

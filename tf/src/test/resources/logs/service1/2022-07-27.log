@@ -1,0 +1,9 @@
+{"@timestamp":"2022-07-27T10:20:58.048Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Try to extract new data","threadName":"zio-default-async-3"}
+{"@timestamp":"2022-07-27T10:20:58.189Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Analyze extracted data","threadName":"zio-default-async-14"}
+{"@timestamp":"2022-07-27T10:22:58.242Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Try to extract new data","threadName":"zio-default-async-2"}
+{"@timestamp":"2022-07-27T10:22:58.305Z","level":"INFO","requestId":"rte6q5pwct","clientId":"48rh6x","message":"Separate required features","threadName":"zio-default-async-4"}
+{"@timestamp":"2022-07-27T10:24:58.307Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Analyze extracted data","threadName":"zio-default-async-7"}
+{"@timestamp":"2022-07-27T10:24:58.385Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Try to extract new data","threadName":"zio-default-async-2"}
+{"@timestamp":"2022-07-27T10:26:58.388Z","level":"INFO","requestId":"56qj7wcnvq","clientId":"a5tar5","message":"Separate required features","threadName":"zio-default-async-6"}
+{"@timestamp":"2022-07-27T10:26:58.452Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Analyze extracted data","threadName":"zio-default-async-13"}
+{"@timestamp":"2022-07-27T10:28:58.492Z","level":"INFO","requestId":"edg2sv6pe7","clientId":"48rh6x","message":"Separate required features","threadName":"zio-default-async-4"}
